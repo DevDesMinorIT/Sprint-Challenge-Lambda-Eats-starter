@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import axios from 'axios';
 import * as yup from 'yup';
 const PizzaForm = (props) => {
@@ -21,24 +21,24 @@ const PizzaForm = (props) => {
         veggie: yup.boolean()
     })
     const submit = () => {
-        schema.validate(formData.then (() =>{
+        schema.validate(formData).then (() =>{
             axios.post('https://reqres.in/api/users', formData).then((res) =>{
-                console.log('This is your posted data', res.data)
-            })
-        }))
-    }
+                console.log(res.data, 'This is your posted data');
+            });
+        });
+    };
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value})
     }
-    const handleToppings = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.checked})
-    }
+    // const handleToppings = (e) => {
+    //     setFormData({...formData, [e.target.name]: e.target.checked})
+   // }    
     return(
         <>
-            <Form onSubmit = {(e) => {
-                e.preventDefault()
+            <Form data-cy='submit' onSubmit = {(event) => {
+                event.preventDefault()
                 submit();
-                console.log()
+                console.log(formData)
             }}style={{margin: '5%'}}>
                <FormGroup>
                     <Label htmlFor='name'>Name</Label>
@@ -60,27 +60,27 @@ const PizzaForm = (props) => {
                 </FormGroup>
                 <FormGroup check>
                     <Label htmlFor= 'pepperoni' />
-                        <Input  id='pepperoni' type='checkbox' name='pepperoni'  data-cy='checkbox' value={formData.pepperoni} onChange={handleChange}/>
+                        <Input  id='pepperoni' type='checkbox' name='pepperoni'  data-cy='checkbox2' value={formData.pepperoni} onChange={handleChange}/>
                             Pepperoni
                 </FormGroup>
                 <FormGroup check>
                     <Label htmlFor= 'sausage' />
-                        <Input  id='sausage' type='checkbox' name='sausage'  data-cy='checkbox' value={formData.sausage} onChange={handleChange} />
+                        <Input  id='sausage' type='checkbox' name='sausage'  data-cy='checkbox3' value={formData.sausage} onChange={handleChange} />
                             Sausage
                 </FormGroup>
                 <FormGroup check>
                     <Label htmlFor= 'veggie' />
-                        <Input  id='veggie' type='checkbox' name='veggie'  data-cy='checkbox' value={formData.veggie} onChange={handleChange}/>
+                        <Input  id='veggie' type='checkbox' name='veggie'  data-cy='checkbox4' value={formData.veggie} onChange={handleChange}/>
                             Veggie Lovers
                 </FormGroup>
                 <FormGroup>
             <Label htmlFor='special' >Special Instructions:</Label>
             <input id='special' type='textarea' name='special' />
         </FormGroup>
-        <Button> </Button>
+        <Button>Submit </Button>
             </Form>
         </>
     )
-}
+    }  
 
 export default PizzaForm;
